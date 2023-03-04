@@ -1,0 +1,2 @@
+log_level = "debug"
+dsn = "host=localhost user=admin password=example dbname=weatherapp port=15432 sslmode=disable"
