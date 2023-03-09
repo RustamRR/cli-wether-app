@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/RustamRR/cli-wether-app/configs"
 	"github.com/RustamRR/cli-wether-app/internal/app"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var CityName string
@@ -20,7 +20,7 @@ var getTodayCmd = &cobra.Command{
 Название города необходимо вводить на английском, например Bishkek
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		server := app.New(configs.GetConfig())
+		server := app.New(viper.GetViper())
 		weather := server.GetWeatherForCity(CityName)
 
 		fmt.Printf(

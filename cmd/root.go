@@ -4,6 +4,8 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
+	"github.com/spf13/viper"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -38,5 +40,18 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
+	viper.SetConfigFile("./configs/weatherapp.toml")
+	viper.AutomaticEnv()
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Используется конфигурационый файл: ", viper.ConfigFileUsed())
 }
