@@ -1,12 +1,15 @@
 # Приложение для определения погоды
-## Установка зависимостей
+## Базовая настройка
 ```shell
 docker compose -f provisioning/docker-compose.local.yaml
+```
+```shell
+./cli-wether-app migrations
 ```
 
 ## Запуск
 ```shell
-./cli-wether-app getToday -c <CitiName> // Например Bishkek
+./cli-wether-app getToday -c Bishkek
 ```
 
 ## Помощь
