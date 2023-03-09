@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/RustamRR/cli-wether-app/configs"
 	"github.com/RustamRR/cli-wether-app/internal/app"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // migrationsCmd represents the migrations command
@@ -15,7 +15,7 @@ var migrationsCmd = &cobra.Command{
 	Use:   "migrations",
 	Short: "Выполнить миграции",
 	Run: func(cmd *cobra.Command, args []string) {
-		server := app.New(configs.GetConfig())
+		server := app.New(viper.GetViper())
 		server.Migrate()
 		fmt.Println("Миграции выполнены")
 	},

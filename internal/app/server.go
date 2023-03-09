@@ -43,22 +43,22 @@ func New(config *viper.Viper) *Server {
 	}
 }
 
-func (s *Server) GetWeatherForCity(name string) CurrentWeatherResult {
+func (s *Server) GetWeatherForCity(name string) (CurrentWeatherResult, error) {
 	city, err := s.getCity(name)
 	if err != nil {
-		s.logger.Error(err.Error())
-		panic(err)
+		s.logger.Warn(err.Error())
+		return CurrentWeatherResult{}, err
 	}
 
 	weatherData, err := GetWeatherByCoordinates(city.Latitude, city.Longitude)
 	if err != nil {
-		s.logger.Error(err.Error())
-		panic(err)
+		s.logger.Warn(err.Error())
+		return CurrentWeatherResult{}, err
 	}
 
 	weatherData.Name = city.Title
 
-	return weatherData
+	return weatherData, nil
 }
 
 func (s *Server) getCity(name string) (*model.City, error) {

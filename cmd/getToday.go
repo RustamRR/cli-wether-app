@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/RustamRR/cli-wether-app/internal/app"
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -21,14 +22,22 @@ var getTodayCmd = &cobra.Command{
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		server := app.New(viper.GetViper())
-		weather := server.GetWeatherForCity(CityName)
+		weather, err := server.GetWeatherForCity(CityName)
+		if err != nil {
+			color.Red("Не удалось узнать погоду")
+			return
+		}
+
+		temperature := fmt.Sprintf("%.2f°C", weather.Temperature)
+		windSpeed := fmt.Sprintf("%.2f м/с", weather.WindSpeed)
+		windDirection := fmt.Sprintf("%.2f°", weather.WindDirection)
 
 		fmt.Printf(
-			"%s. \nТемпература воздуха %.2f. \nСкорость ветра: %.2f. \nНаправление ветра: %.2f.\n",
-			weather.Name,
-			weather.Temperature,
-			weather.WindSpeed,
-			weather.WindDirection,
+			"%s. \nТемпература воздуха %s. \nСкорость ветра: %s. \nНаправление ветра: %s.\n",
+			color.New(color.FgHiGreen).SprintfFunc()(weather.Name),
+			color.New(color.FgRed).SprintfFunc()(temperature),
+			color.New(color.FgBlue).SprintfFunc()(windSpeed),
+			color.New(color.FgCyan).SprintfFunc()(windDirection),
 		)
 	},
 }
